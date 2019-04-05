@@ -8,6 +8,7 @@ import com.infosupport.poc.ddd.domain.valueobject.Country;
 import com.infosupport.poc.ddd.domain.valueobject.Currency;
 import com.infosupport.poc.ddd.service.dto.PaymentInstructionDTO;
 import org.dozer.DozerBeanMapperSingletonWrapper;
+import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,14 +23,15 @@ public class PaymentInstructionFactory {
 
     public PaymentInstruction createPaymentInstructionDO(final PaymentInstructionDTO dto) throws BusinessRuleNotSatisfied {
 
-    	final List<String> validationMessages = new ArrayList<>();
+    	final List<String> msgs = new ArrayList<>();
 
-		final Currency paymentCurrency = Currency.create(dto.getPaymentCurrency(), validationMessages);
+		final Currency paymentCurrency = Currency.create(dto.getPaymentCurrency(), msgs);
 		final Country beneficiaryBankCountry = Country.create(dto.getBeneficiaryBankCountry());
+		final OrderingAccount orderingAccount = OrderingAccount.create(dto.getOrderingAccountIdentification(), msgs);
 
 		return new PaymentInstruction(
 				dto.getPaymentInstructionID(),
-				OrderingAccount.create(dto.getOrderingAccountIdentification(), validationMessages),
+				orderingAccount,
 				dto.getBeneficiaryAccountIdentification(),
 				dto.getBeneficiaryAccountName(),
 				dto.getBeneficiaryBankName(),
@@ -38,9 +40,13 @@ public class PaymentInstructionFactory {
 				paymentCurrency,
 				dto.getFedwireCode(),
 				dto.getAmount(),
-				forwardDateService.calculateForwardDate(paymentCurrency),
+				calculateForwardDate(paymentCurrency),
 				new LogTracerImpl(PaymentInstruction.class),
-				validationMessages);
+				msgs);
+	}
+
+	private LocalDateTime calculateForwardDate(final Currency paymentCurrency) {
+		return forwardDateService.calculateForwardDate(paymentCurrency);
 	}
 
 	public PaymentInstructionDTO createPaymentInstructionDTO(final PaymentInstruction paymentInstruction) {

@@ -12,15 +12,17 @@ public final class BeneficiaryAccount {
 	
 	private String beneficiaryAccountName;
 		
-	private BeneficiaryAccount(final String beneficiaryAccountIdentification, final String beneficiaryAccountName) throws BusinessRuleNotSatisfied {
+	private BeneficiaryAccount(final String beneficiaryAccountIdentification, final String beneficiaryAccountName)
+			throws BusinessRuleNotSatisfied {
+
 		if (StringUtils.isBlank(beneficiaryAccountIdentification)) {
 			throw new BusinessRuleNotSatisfied("Beneficiary account is mandatory");
 		}
 
 		try {
-			IbanUtil.validate(beneficiaryAccountIdentification, IbanFormat.Default);
+			IbanUtil.validate(beneficiaryAccountIdentification);
 		} catch (IbanFormatException | InvalidCheckDigitException |	UnsupportedCountryException e) {
-			throw new BusinessRuleNotSatisfied("Beneficiary account is not a valid IBAN");
+			throw new BusinessRuleNotSatisfied("Beneficiary account is not a valid IBAN (e.g.: DE89370400440532013000)");
 		}
 
 		this.beneficiaryAccountIdentification = beneficiaryAccountIdentification;
@@ -28,8 +30,8 @@ public final class BeneficiaryAccount {
 	}
 
     static BeneficiaryAccount create(final String beneficiaryAccountIdentification,
-											final String beneficiaryAccountName,
-											final List<String> validationMessages) {
+									 final String beneficiaryAccountName,
+									 final List<String> validationMessages) {
 		try {
 			return new BeneficiaryAccount(beneficiaryAccountIdentification, beneficiaryAccountName);
 		} catch (final BusinessRuleNotSatisfied businessRuleNotSatisfied) {

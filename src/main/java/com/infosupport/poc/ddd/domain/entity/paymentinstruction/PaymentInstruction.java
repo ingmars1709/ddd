@@ -17,21 +17,13 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 public final class PaymentInstruction implements Entity<PaymentInstruction> {
 
 	private Long paymentInstructionID;
-	
 	private OrderingAccount orderingAccount;
-	
 	private Currency paymentCurrency;
-	
 	private BeneficiaryAccount beneficiaryAccount;
-
     private ManualBeneficiaryBank beneficiaryBank;
-    
     private Fedwire fedwire;
-    
     private Amount amount;
-
 	private LocalDateTime forwardDateTime;
-
 	private Tracer tracer;
 
 	public PaymentInstruction(final Long paymentInstructionID,
@@ -46,18 +38,19 @@ public final class PaymentInstruction implements Entity<PaymentInstruction> {
 							  final String amount,
 							  final LocalDateTime forwardDateTime,
 							  final LogTracerImpl tracer,
-							  final List<String> validationMessages) throws BusinessRuleNotSatisfied {
+							  final List<String> msgs) throws BusinessRuleNotSatisfied {
+
 		this.paymentInstructionID = paymentInstructionID;
 		this.orderingAccount = orderingAccount;
 		this.paymentCurrency = paymentCurrency;
-		this.beneficiaryAccount = BeneficiaryAccount.create(beneficiaryAccountIdentification, beneficiaryAccountName, validationMessages);
+		this.beneficiaryAccount = BeneficiaryAccount.create(beneficiaryAccountIdentification, beneficiaryAccountName, msgs);
 		this.beneficiaryBank = ManualBeneficiaryBank.create(beneficiaryBankName, beneficiaryBankAddress, beneficiaryBankCountry);
-		this.fedwire = Fedwire.create(fedwireCode, paymentCurrency, beneficiaryBankCountry, validationMessages);
-		this.amount = Amount.create(amount, validationMessages);
+		this.fedwire = Fedwire.create(fedwireCode, paymentCurrency, beneficiaryBankCountry, msgs);
+		this.amount = Amount.create(amount, msgs);
 		this.forwardDateTime = forwardDateTime;
 		this.tracer = tracer;
 
-		SemanticBusinessRuleMap.satisfiedBy(this, validationMessages);
+		SemanticBusinessRuleMap.satisfiedBy(this, msgs);
 
 		tracer.trace("PI validated");
 	}

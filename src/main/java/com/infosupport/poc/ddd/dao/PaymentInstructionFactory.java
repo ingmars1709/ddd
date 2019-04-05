@@ -16,24 +16,32 @@ import java.util.List;
 @Service("DAOPaymentInstructionFactory")
 public class PaymentInstructionFactory {
 
-	public PaymentInstructionEntity createPaymentInstructionEntity(final PaymentInstruction paymentInstruction, final OrderingAccount orderingAccount) {
+	public PaymentInstructionEntity createPaymentInstructionEntity(
+			final PaymentInstruction paymentInstruction, final OrderingAccount orderingAccount) {
+
 		final PaymentInstructionEntity pi =
 				DozerBeanMapperSingletonWrapper.getInstance().map(paymentInstruction, PaymentInstructionEntity.class);
 
 		pi.setOrderingAccount(orderingAccount);
+
 		return pi;
 	}
 	
-	public PaymentInstruction createPaymentInstruction(final PaymentInstructionEntity paymentInstructionEntity) throws BusinessRuleNotSatisfied {
-		final List<String> validationMessages = new ArrayList<>();
+	public PaymentInstruction createPaymentInstruction(
+			final PaymentInstructionEntity paymentInstructionEntity) throws BusinessRuleNotSatisfied {
 
-        final Currency paymentCurrency = Currency.create("USD", validationMessages);
+		final List<String> msgs = new ArrayList<>();
+
+        final Currency paymentCurrency = Currency.create("USD", msgs);
         final Country beneficiaryBankCountry = Country.create("United States of America");
+		final com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount orderingAccount =
+				com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount.create(
+						paymentInstructionEntity.getOrderingAccount().getOrderingAccountIdentification(), msgs);
 
-        return new PaymentInstruction(
+		return new PaymentInstruction(
                 paymentInstructionEntity.getId(),
-                com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount.create(paymentInstructionEntity.getOrderingAccount().getOrderingAccountIdentification(), validationMessages),
-                "DE89 3704 0044 0532 0130 00",
+				orderingAccount,
+                "DE89370400440532013000",
 				"Piet",
                 "foo",
 				"bar",
@@ -43,7 +51,7 @@ public class PaymentInstructionFactory {
                 "123",
                 paymentInstructionEntity.getForwardDateTime(),
                 new LogTracerImpl(PaymentInstruction.class),
-                validationMessages
+                msgs
         );
 	}
 }

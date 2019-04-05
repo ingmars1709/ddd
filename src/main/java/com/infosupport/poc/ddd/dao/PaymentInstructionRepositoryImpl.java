@@ -24,7 +24,7 @@ public class PaymentInstructionRepositoryImpl implements PaymentInstructionRepos
 
 	@Override	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)	
-	public void add(PaymentInstruction paymentInstruction) {
+	public void add(final PaymentInstruction paymentInstruction) {
 		OrderingAccount orderingAccount = findOrderingAccount(paymentInstruction.getOrderingAccount().getOrderingAccountIdentification());
 		
 		PaymentInstructionEntity paymentInstructionEntity =

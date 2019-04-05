@@ -19,21 +19,19 @@ public final class SemanticBusinessRuleMap {
 		ruleMap.put(SemanticBusinessRuleKey.MANDATORY_RULE, new MandatoryRule());
 	}
 		
-	private SemanticBusinessRuleMap() {
-		
-	}
+	private SemanticBusinessRuleMap() {	}
 
-	public static void satisfiedBy(final PaymentInstruction paymentInstruction, final List<String> validationMessages) throws BusinessRuleNotSatisfied {
+	public static void satisfiedBy(final PaymentInstruction paymentInstruction, final List<String> msgs) throws BusinessRuleNotSatisfied {
 		ruleMap.values().stream().forEach(r -> {
 			try {
 				r.satisfiedBy(paymentInstruction);
 			} catch (final BusinessRuleNotSatisfied brns) {
-				validationMessages.addAll(brns.getValidationMessages());
+				msgs.addAll(brns.getValidationMessages());
 			}
 		});
 
-	    if (!validationMessages.isEmpty()) {
-	    	throw new BusinessRuleNotSatisfied(validationMessages);
+	    if (!msgs.isEmpty()) {
+	    	throw new BusinessRuleNotSatisfied(msgs);
 		}
     }
 
