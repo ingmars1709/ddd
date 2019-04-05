@@ -24,9 +24,9 @@ public final class Fedwire {
     }
 
     static Fedwire create(final String fedwireCode,
-                                 final Currency paymentCurrency,
-                                 final Country beneficiaryBankCountry,
-                                 final List<String> validationMessages) {
+                          final Currency paymentCurrency,
+                          final Country beneficiaryBankCountry,
+                          final List<String> validationMessages) {
         try {
             if (getFedwireMandatoryRule().isApplicable(paymentCurrency, beneficiaryBankCountry)) {
                 return new Fedwire(fedwireCode);
