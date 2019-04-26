@@ -29,9 +29,9 @@ public final class BeneficiaryAccount {
 		this.beneficiaryAccountName = beneficiaryAccountName;
 	}
 
-    static BeneficiaryAccount create(final String beneficiaryAccountIdentification,
-									 final String beneficiaryAccountName,
-									 final List<String> validationMessages) {
+    public static BeneficiaryAccount create(final String beneficiaryAccountIdentification,
+									        final String beneficiaryAccountName,
+									        final List<String> validationMessages) {
 		try {
 			return new BeneficiaryAccount(beneficiaryAccountIdentification, beneficiaryAccountName);
 		} catch (final BusinessRuleNotSatisfied businessRuleNotSatisfied) {

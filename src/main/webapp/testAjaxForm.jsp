@@ -9,7 +9,7 @@
 <form method="post" id="formAddPayment">
     <table>
     	<tr>
-    		<td>Ordering account</td>
+    		<td>Ordering Account</td>
     		<td><select name="orderingAccountIdentification" data-bind="options: orderingAccounts,
     																	optionsCaption: 'Select account',    																	
     																	value: orderingAccountIdentification"></td>
@@ -25,25 +25,29 @@
     		<td><input type ="text" name="amount" data-bind="value: amount"></td>
     	</tr>
     	<tr>
+    	   <td><br/></td>
     	</tr>
     	<tr>
-    		<td>Beneficiary account</td>
+    		<td>Beneficiary Account</td>
     		<td><input type="text" name="beneficiaryAccountIdentification" data-bind="value: beneficiaryAccountIdentification"></td>
     	</tr>
     	<tr>
-    		<td>account name</td>
+    		<td>Beneficiary Account name</td>
     		<td><input type="text" name="beneficiaryAccountName" data-bind="value: beneficiaryAccountName"></td>
     	</tr>
+    	<tr>
+    	    <td><br/></td>
+    	</tr>
 	    <tr>
-	        <td>bank name</td>
+	        <td>Beneficiary Bank name</td>
 	        <td><input type="text" name="beneficiaryBankName" data-bind="value: beneficiaryBankName"></td>
 	    </tr>    
 	    <tr>
-	        <td>bank address</td>
+	        <td>Beneficiary Bank address</td>
 	        <td><input type="text" name="beneficiaryBankAddress" data-bind="value: beneficiaryBankAddress"></td>
 	    </tr>
 	    <tr>
-	    	<td>bank country</td>
+	    	<td>Beneficiary Bank country</td>
 	    	<td><select name="beneficiaryBankCountry" data-bind="options: beneficiaryBankCountries, 
 	    														 optionsCaption: 'Select country',
 	    														 value: selectedBeneficiaryBankCountry"></select></td>

@@ -21,7 +21,7 @@ public final class Amount {
         }
     }
 
-    static Amount create(final String amount, final List<String> validationMessages) {
+    public static Amount create(final String amount, final List<String> validationMessages) {
         try {
             return new Amount(amount);
         } catch (final BusinessRuleNotSatisfied businessRuleNotSatisfied) {

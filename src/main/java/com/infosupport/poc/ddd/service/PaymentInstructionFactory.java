@@ -1,7 +1,7 @@
 package com.infosupport.poc.ddd.service;
 
 import com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount;
-import com.infosupport.poc.ddd.domain.entity.paymentinstruction.PaymentInstruction;
+import com.infosupport.poc.ddd.domain.entity.paymentinstruction.*;
 import com.infosupport.poc.ddd.domain.rule.BusinessRuleNotSatisfied;
 import com.infosupport.poc.ddd.domain.service.ForwardDateService;
 import com.infosupport.poc.ddd.domain.valueobject.Country;
@@ -26,20 +26,21 @@ public class PaymentInstructionFactory {
     	final List<String> msgs = new ArrayList<>();
 
 		final Currency paymentCurrency = Currency.create(dto.getPaymentCurrency(), msgs);
-		final Country beneficiaryBankCountry = Country.create(dto.getBeneficiaryBankCountry());
 		final OrderingAccount orderingAccount = OrderingAccount.create(dto.getOrderingAccountIdentification(), msgs);
+		final BeneficiaryAccount beneficiaryAccount = BeneficiaryAccount.create(dto.getBeneficiaryAccountIdentification(), dto.getBeneficiaryAccountName(), msgs);
+		final Country beneficiaryBankCountry = Country.create(dto.getBeneficiaryBankCountry());
+		final ManualBeneficiaryBank beneficiaryBank = ManualBeneficiaryBank.create(dto.getBeneficiaryBankName(), dto.getBeneficiaryBankAddress(), beneficiaryBankCountry);
+		final Fedwire fedwire = Fedwire.create(dto.getFedwireCode(), paymentCurrency, beneficiaryBankCountry, msgs);
+		final Amount amount = Amount.create(dto.getAmount(), msgs);
 
 		return new PaymentInstruction(
 				dto.getPaymentInstructionID(),
 				orderingAccount,
-				dto.getBeneficiaryAccountIdentification(),
-				dto.getBeneficiaryAccountName(),
-				dto.getBeneficiaryBankName(),
-				dto.getBeneficiaryBankAddress(),
-				beneficiaryBankCountry,
+				beneficiaryAccount,
+				beneficiaryBank,
 				paymentCurrency,
-				dto.getFedwireCode(),
-				dto.getAmount(),
+				fedwire,
+				amount,
 				calculateForwardDate(paymentCurrency),
 				new LogTracerImpl(PaymentInstruction.class),
 				msgs);

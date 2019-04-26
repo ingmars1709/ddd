@@ -2,7 +2,7 @@ package com.infosupport.poc.ddd.dao;
 
 import com.infosupport.poc.ddd.dao.entity.OrderingAccount;
 import com.infosupport.poc.ddd.dao.entity.PaymentInstructionEntity;
-import com.infosupport.poc.ddd.domain.entity.paymentinstruction.PaymentInstruction;
+import com.infosupport.poc.ddd.domain.entity.paymentinstruction.*;
 import com.infosupport.poc.ddd.domain.rule.BusinessRuleNotSatisfied;
 import com.infosupport.poc.ddd.domain.valueobject.Country;
 import com.infosupport.poc.ddd.domain.valueobject.Currency;
@@ -34,21 +34,20 @@ public class PaymentInstructionFactory {
 
         final Currency paymentCurrency = Currency.create("USD", msgs);
         final Country beneficiaryBankCountry = Country.create("United States of America");
-		final com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount orderingAccount =
-				com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount.create(
-						paymentInstructionEntity.getOrderingAccount().getOrderingAccountIdentification(), msgs);
+		final com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount orderingAccount = com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount.create(paymentInstructionEntity.getOrderingAccount().getOrderingAccountIdentification(), msgs);
+		final BeneficiaryAccount beneficiaryAccount = BeneficiaryAccount.create("DE89370400440532013000", "Piet", msgs);
+		final ManualBeneficiaryBank beneficiaryBank = ManualBeneficiaryBank.create("The Bank", null, beneficiaryBankCountry);
+		final Fedwire fedwire = Fedwire.create("123456789", paymentCurrency, beneficiaryBankCountry, msgs);
+		final Amount amount = Amount.create("123", msgs);
 
 		return new PaymentInstruction(
                 paymentInstructionEntity.getId(),
 				orderingAccount,
-                "DE89370400440532013000",
-				"Piet",
-                "foo",
-				"bar",
-				beneficiaryBankCountry,
+                beneficiaryAccount,
+				beneficiaryBank,
                 paymentCurrency,
-                "123456789",
-                "123",
+                fedwire,
+                amount,
                 paymentInstructionEntity.getForwardDateTime(),
                 new LogTracerImpl(PaymentInstruction.class),
                 msgs

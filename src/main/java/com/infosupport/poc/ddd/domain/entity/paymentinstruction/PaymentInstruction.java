@@ -28,25 +28,21 @@ public final class PaymentInstruction implements Entity<PaymentInstruction> {
 
 	public PaymentInstruction(final Long paymentInstructionID,
 							  final OrderingAccount orderingAccount,
-							  final String beneficiaryAccountIdentification,
-							  final String beneficiaryAccountName,
-							  final String beneficiaryBankName,
-							  final String beneficiaryBankAddress,
-							  final Country beneficiaryBankCountry,
+							  final BeneficiaryAccount beneficiaryAccount,
+							  final ManualBeneficiaryBank beneficiaryBank,
 							  final Currency paymentCurrency,
-							  final String fedwireCode,
-							  final String amount,
+							  final Fedwire fedwire,
+							  final Amount amount,
 							  final LocalDateTime forwardDateTime,
 							  final LogTracerImpl tracer,
 							  final List<String> msgs) throws BusinessRuleNotSatisfied {
-
 		this.paymentInstructionID = paymentInstructionID;
-		this.orderingAccount = orderingAccount;
 		this.paymentCurrency = paymentCurrency;
-		this.beneficiaryAccount = BeneficiaryAccount.create(beneficiaryAccountIdentification, beneficiaryAccountName, msgs);
-		this.beneficiaryBank = ManualBeneficiaryBank.create(beneficiaryBankName, beneficiaryBankAddress, beneficiaryBankCountry);
-		this.fedwire = Fedwire.create(fedwireCode, paymentCurrency, beneficiaryBankCountry, msgs);
-		this.amount = Amount.create(amount, msgs);
+		this.orderingAccount = orderingAccount;
+		this.beneficiaryAccount = beneficiaryAccount;
+		this.beneficiaryBank = beneficiaryBank;
+		this.fedwire = fedwire;
+		this.amount = amount;
 		this.forwardDateTime = forwardDateTime;
 		this.tracer = tracer;
 

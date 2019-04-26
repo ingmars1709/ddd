@@ -17,7 +17,7 @@ public class ManualBeneficiaryBank {
     	this.beneficiaryBankCountry = beneficiaryBankCountry;
     }
 
-    static ManualBeneficiaryBank create(final String beneficiaryBankName,
+    public static ManualBeneficiaryBank create(final String beneficiaryBankName,
 											   final String beneficiaryBankAddress,
 											   final Country beneficiaryBankCountry) {
     	return new ManualBeneficiaryBank(beneficiaryBankName, beneficiaryBankAddress, beneficiaryBankCountry);

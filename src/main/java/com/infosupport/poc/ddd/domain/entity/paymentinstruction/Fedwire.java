@@ -23,7 +23,7 @@ public final class Fedwire {
         this.value = code;
     }
 
-    static Fedwire create(final String fedwireCode,
+    public static Fedwire create(final String fedwireCode,
                           final Currency paymentCurrency,
                           final Country beneficiaryBankCountry,
                           final List<String> validationMessages) {
