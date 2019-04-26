@@ -11,7 +11,7 @@ public class BankNameMandatoryRule implements SemanticBusinessRule {
         if (paymentInstruction != null
                 && paymentInstruction.hasBankCountry()
                 && !paymentInstruction.hasBankName()) {
-            throw new BusinessRuleNotSatisfied(Arrays.asList("Bank name mandatory when bank country set"));
+            throw new BusinessRuleNotSatisfied(Arrays.asList("Bank name mandatory when Bank country set"));
         }
     }
 }

@@ -12,7 +12,7 @@ public class OrderingAccount implements Entity<OrderingAccount> {
 
 	private OrderingAccount(final String orderingAccountIdentification) throws BusinessRuleNotSatisfied {
 	    if (StringUtils.isBlank(orderingAccountIdentification)) {
-	        throw new BusinessRuleNotSatisfied("Ordering account identification is mandatory");
+	        throw new BusinessRuleNotSatisfied("Ordering Account identification is mandatory");
         }
 		this.orderingAccountIdentification = orderingAccountIdentification;
 	}

@@ -16,13 +16,13 @@ public final class BeneficiaryAccount {
 			throws BusinessRuleNotSatisfied {
 
 		if (StringUtils.isBlank(beneficiaryAccountIdentification)) {
-			throw new BusinessRuleNotSatisfied("Beneficiary account is mandatory");
+			throw new BusinessRuleNotSatisfied("Beneficiary Account is mandatory");
 		}
 
 		try {
 			IbanUtil.validate(beneficiaryAccountIdentification);
 		} catch (IbanFormatException | InvalidCheckDigitException |	UnsupportedCountryException e) {
-			throw new BusinessRuleNotSatisfied("Beneficiary account is not a valid IBAN (e.g.: DE89370400440532013000)");
+			throw new BusinessRuleNotSatisfied("Beneficiary Account is not a valid IBAN (e.g.: DE89370400440532013000)");
 		}
 
 		this.beneficiaryAccountIdentification = beneficiaryAccountIdentification;
