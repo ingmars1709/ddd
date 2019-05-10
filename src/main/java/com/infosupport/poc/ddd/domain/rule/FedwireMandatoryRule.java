@@ -26,7 +26,7 @@ public final class FedwireMandatoryRule implements SemanticBusinessRule {
 				&& paymentInstruction.hasCurrencyUSD()
 				&& paymentInstruction.hasBankCountryUSA()
 				&& !paymentInstruction.hasFedwire()) {
-			throw new BusinessRuleNotSatisfied(Arrays.asList("Fedwire mandatory when currency=USD and bank=USA"));
+			throw new BusinessRuleNotSatisfied(Arrays.asList("Fedwire mandatory with USD currency and beneficiary bank in USA"));
 		}
 	}
 }
