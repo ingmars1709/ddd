@@ -1,5 +1,6 @@
 package com.infosupport.poc.ddd.service;
 
+import com.infosupport.checker.qual.ApprovedPayment;
 import com.infosupport.poc.ddd.domain.entity.paymentinstruction.PaymentInstruction;
 import com.infosupport.poc.ddd.domain.rule.BusinessRuleNotSatisfied;
 import com.infosupport.poc.ddd.domain.service.PaymentInstructionRepository;
@@ -27,6 +28,8 @@ public class PaymentInstructionServiceImpl implements PaymentInstructionService 
 
 			paymentInstructionRepository.add(paymentInstruction);
 
+			sendPayment(paymentInstruction); // compile error
+
 		} catch (final BusinessRuleNotSatisfied businessRuleNotSatisfied) {
 			return businessRuleNotSatisfied.getValidationMessages();
 		}
@@ -42,5 +45,10 @@ public class PaymentInstructionServiceImpl implements PaymentInstructionService 
 			businessRuleNotSatisfied.printStackTrace();
 		}
 		return paymentInstructionFactory.createPaymentInstructionDTO(paymentInstruction);
-	}		
+	}
+
+	@Override
+	public void sendPayment(final @ApprovedPayment PaymentInstruction paymentInstruction) {
+		// send payment
+	}
 }

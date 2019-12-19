@@ -14,6 +14,7 @@
 		<spring.version>4.0.3.RELEASE</spring.version>
 		<hibernate.version>4.3.5.Final</hibernate.version>		
 		<slf4j.version>1.6.4</slf4j.version>
+		<annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
 	</properties>
 
     <build>
@@ -42,8 +43,13 @@
 			</plugin>
         </plugins>
     </build>
-	
+
 	<dependencies>
+			<dependency>
+				<groupId>com.infosupport</groupId>
+				<artifactId>checkerframework</artifactId>
+				<version>1.0-SNAPSHOT</version>
+			</dependency>
 			<dependency>
 		         <groupId>org.hibernate</groupId>
 		         <artifactId>hibernate-entitymanager</artifactId>
@@ -183,6 +189,94 @@
 				<groupId>org.iban4j</groupId>
 				<artifactId>iban4j</artifactId>
 				<version>3.2.1</version>
-		</dependency>
+			</dependency>
+			<dependency>
+				<groupId>org.checkerframework</groupId>
+				<artifactId>checker-qual</artifactId>
+				<version>2.11.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.checkerframework</groupId>
+				<artifactId>jdk8</artifactId>
+				<version>2.11.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.checkerframework</groupId>
+				<artifactId>checker</artifactId>
+				<version>2.11.1</version>
+			</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>checker</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<javac.version>9+181-r4173-1</javac.version>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>com.google.errorprone</groupId>
+					<artifactId>javac</artifactId>
+					<version>9+181-r4173-1</version>
+				</dependency>
+			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- This plugin will set properties values using dependency information -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>properties</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>3.8.1</version>
+						<configuration>
+							<fork>true</fork>
+							<source>1.8</source>
+							<target>1.8</target>
+							<compilerArguments>
+								<Xmaxerrs>10000</Xmaxerrs>
+								<Xmaxwarns>10000</Xmaxwarns>
+							</compilerArguments>
+							<annotationProcessorPaths>
+								<path>
+									<groupId>org.checkerframework</groupId>
+									<artifactId>checker</artifactId>
+									<version>2.11.1</version>
+								</path>
+								<path>
+									<groupId>com.infosupport</groupId>
+									<artifactId>checkerframework</artifactId>
+									<version>1.0-SNAPSHOT</version>
+								</path>
+							</annotationProcessorPaths>
+							<annotationProcessors>
+								<!-- Add all the checkers you want to enable here -->
+								<annotationProcessor>org.checkerframework.common.subtyping.SubtypingChecker</annotationProcessor>
+							</annotationProcessors>
+							<compilerArgs combine.children="append">
+								<!-- location of the annotated JDK, which comes from a Maven dependency -->
+								<arg>-Xbootclasspath/p:${annotatedJdk}</arg>
+								<arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
+								<arg>-Alint=redundantNullComparison</arg>
+								<arg>-Alint=forbidnonnullarraycomponents</arg>
+								<arg>-Aquals=com.infosupport.checker.qual.ValidPayment,com.infosupport.checker.qual.ApprovedPayment</arg>
+								<arg>-Awarns</arg>
+							</compilerArgs>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
