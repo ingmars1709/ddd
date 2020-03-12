@@ -18,3 +18,9 @@ Run the following 3 Maven steps to start the Payment system:
 (3) Point your browser to:
 
 ``http://localhost:8080/addAjax``
+
+Additionally you can compile the source using additional type rules on the PaymentInstruction state:
+
+(1) mvn clean compile -Pchecker
+
+This will invoke the Checker Framework's (https://checkerframework.org/) subtyping checker.
