@@ -3,7 +3,6 @@ package com.infosupport.poc.ddd.domain.entity.paymentinstruction;
 import com.infosupport.poc.ddd.domain.rule.BusinessRuleNotSatisfied;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 public final class Amount {
@@ -35,6 +34,6 @@ public final class Amount {
     }
 
     private void invalidAmount() throws BusinessRuleNotSatisfied {
-        throw new BusinessRuleNotSatisfied(Arrays.asList("Invalid amount"));
+        throw new BusinessRuleNotSatisfied("Invalid amount");
     }
 }

@@ -4,7 +4,6 @@ import com.infosupport.poc.ddd.domain.entity.paymentinstruction.PaymentInstructi
 import com.infosupport.poc.ddd.domain.valueobject.Country;
 import com.infosupport.poc.ddd.domain.valueobject.Currency;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +26,7 @@ public final class FedwireMandatoryRule implements SemanticBusinessRule {
 				&& paymentInstruction.hasCurrencyUSD()
 				&& paymentInstruction.hasBankCountryUSA()
 				&& !paymentInstruction.hasFedwire()) {
-			throw new BusinessRuleNotSatisfied(Arrays.asList("Fedwire mandatory with USD currency and beneficiary bank in USA"));
+			throw new BusinessRuleNotSatisfied("Fedwire mandatory with USD currency and beneficiary bank in USA");
 		}
 	}
 }

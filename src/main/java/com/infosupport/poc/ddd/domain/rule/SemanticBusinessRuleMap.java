@@ -22,11 +22,11 @@ public final class SemanticBusinessRuleMap {
 	private SemanticBusinessRuleMap() {	}
 
 	public static void satisfiedBy(final PaymentInstruction paymentInstruction, final List<String> msgs) throws BusinessRuleNotSatisfied {
-		ruleMap.values().stream().forEach(r -> {
+		ruleMap.values().stream().forEach(rule -> {
 			try {
-				r.satisfiedBy(paymentInstruction);
-			} catch (final BusinessRuleNotSatisfied brns) {
-				msgs.addAll(brns.getValidationMessages());
+				rule.satisfiedBy(paymentInstruction);
+			} catch (final BusinessRuleNotSatisfied brnse) {
+				msgs.addAll(brnse.getValidationMessages());
 			}
 		});
 

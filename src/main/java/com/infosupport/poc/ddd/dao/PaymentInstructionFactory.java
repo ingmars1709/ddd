@@ -38,7 +38,7 @@ public class PaymentInstructionFactory {
 		final com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount orderingAccount = com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount.create(paymentInstructionEntity.getOrderingAccount().getOrderingAccountIdentification(), msgs);
 		final BeneficiaryAccount beneficiaryAccount = BeneficiaryAccount.create("DE89370400440532013000", "Piet", msgs);
 		final ManualBeneficiaryBank beneficiaryBank = ManualBeneficiaryBank.create("The Bank", null, beneficiaryBankCountry);
-		final Fedwire fedwire = Fedwire.create("123456789", paymentCurrency, beneficiaryBankCountry, msgs);
+		final Optional<Fedwire> fedwire = Fedwire.create("123456789", paymentCurrency, beneficiaryBankCountry, msgs);
 		final Amount amount = Amount.create("123", msgs);
 
 		return new PaymentInstruction(
@@ -47,7 +47,7 @@ public class PaymentInstructionFactory {
                 beneficiaryAccount,
 				beneficiaryBank,
                 paymentCurrency.orElse(null),
-                fedwire,
+                fedwire.orElse(null),
                 amount,
                 paymentInstructionEntity.getForwardDateTime(),
                 new LogTracerImpl(PaymentInstruction.class),

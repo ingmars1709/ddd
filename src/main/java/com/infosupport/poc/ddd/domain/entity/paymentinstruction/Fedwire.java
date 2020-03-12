@@ -1,10 +1,8 @@
 package com.infosupport.poc.ddd.domain.entity.paymentinstruction;
 
-import com.infosupport.poc.ddd.domain.rule.BusinessRuleNotSatisfied;
 import com.infosupport.poc.ddd.domain.valueobject.Country;
 import com.infosupport.poc.ddd.domain.valueobject.Currency;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -17,25 +15,20 @@ public final class Fedwire {
 
     private static final Pattern fedwirePattern = Pattern.compile("^[0-9]{9}$");
 
-    private Fedwire(final String code) throws BusinessRuleNotSatisfied {
-        if (!fedwirePattern.matcher(code).matches()) {
-            throw new BusinessRuleNotSatisfied(Arrays.asList("Fedwire has 9 digits"));
-        }
+    private Fedwire(final String code)  {
         this.value = code;
     }
 
-    public static Fedwire create(final String fedwireCode,
-                          final Optional<Currency> paymentCurrency,
-                          final Country beneficiaryBankCountry,
-                          final List<String> validationMessages) {
-        try {
-            if (getFedwireMandatoryRule().isApplicable(paymentCurrency, beneficiaryBankCountry)) {
-                return new Fedwire(fedwireCode);
-            }
-        } catch (final BusinessRuleNotSatisfied businessRuleNotSatisfied) {
-            validationMessages.addAll(businessRuleNotSatisfied.getValidationMessages());
+    public static Optional<Fedwire> create(final String fedwireCode,
+                                          final Optional<Currency> paymentCurrency,
+                                          final Country beneficiaryBankCountry,
+                                          final List<String> validationMessages) {
+        if (getFedwireMandatoryRule().isApplicable(paymentCurrency, beneficiaryBankCountry)
+                && !fedwirePattern.matcher(fedwireCode).matches()) {
+            validationMessages.add("Fedwire has 9 digits");
+            return Optional.empty();
         }
-        return null;
+        return Optional.of(new Fedwire(fedwireCode));
     }
 
     public String getValue() {

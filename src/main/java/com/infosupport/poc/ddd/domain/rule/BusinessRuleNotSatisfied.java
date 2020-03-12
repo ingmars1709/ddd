@@ -1,7 +1,8 @@
 package com.infosupport.poc.ddd.domain.rule;
 
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public final class BusinessRuleNotSatisfied extends Exception {
 
@@ -11,8 +12,8 @@ public final class BusinessRuleNotSatisfied extends Exception {
         this.validationMessages = validationMessages;
     }
 
-    public BusinessRuleNotSatisfied(String validationMessage) {
-        this(Arrays.asList(validationMessage));
+    public BusinessRuleNotSatisfied(final String validationMessage) {
+        this(asList(validationMessage));
     }
 
     public List<String> getValidationMessages() {

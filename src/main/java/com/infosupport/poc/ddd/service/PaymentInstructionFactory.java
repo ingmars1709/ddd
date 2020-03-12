@@ -31,7 +31,7 @@ public class PaymentInstructionFactory {
 		final BeneficiaryAccount beneficiaryAccount = BeneficiaryAccount.create(dto.getBeneficiaryAccountIdentification(), dto.getBeneficiaryAccountName(), msgs);
 		final Country beneficiaryBankCountry = Country.create(dto.getBeneficiaryBankCountry());
 		final ManualBeneficiaryBank beneficiaryBank = ManualBeneficiaryBank.create(dto.getBeneficiaryBankName(), dto.getBeneficiaryBankAddress(), beneficiaryBankCountry);
-		final Fedwire fedwire = Fedwire.create(dto.getFedwireCode(), paymentCurrency, beneficiaryBankCountry, msgs);
+		final Optional<Fedwire> fedwire = Fedwire.create(dto.getFedwireCode(), paymentCurrency, beneficiaryBankCountry, msgs);
 		final Amount amount = Amount.create(dto.getAmount(), msgs);
 
 		return new PaymentInstruction(
@@ -40,7 +40,7 @@ public class PaymentInstructionFactory {
 				beneficiaryAccount,
 				beneficiaryBank,
 				paymentCurrency.orElse(null),
-				fedwire,
+				fedwire.orElse(null),
 				amount,
 				calculateForwardDate(paymentCurrency),
 				new LogTracerImpl(PaymentInstruction.class),

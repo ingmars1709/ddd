@@ -1,13 +1,12 @@
 package com.infosupport.poc.ddd.domain.entity.paymentinstruction;
 
 import com.infosupport.poc.ddd.domain.entity.Entity;
-import com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount;
 import com.infosupport.poc.ddd.domain.entity.Tracer;
+import com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount;
 import com.infosupport.poc.ddd.domain.rule.BusinessRuleNotSatisfied;
 import com.infosupport.poc.ddd.domain.rule.SemanticBusinessRuleMap;
 import com.infosupport.poc.ddd.domain.valueobject.Country;
 import com.infosupport.poc.ddd.domain.valueobject.Currency;
-import com.infosupport.poc.ddd.service.LogTracerImpl;
 import org.joda.time.LocalDateTime;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public final class PaymentInstruction implements Entity<PaymentInstruction> {
 							  final Fedwire fedwire,
 							  final Amount amount,
 							  final LocalDateTime forwardDateTime,
-							  final LogTracerImpl tracer,
+							  final Tracer tracer,
 							  final List<String> validationMessages) throws BusinessRuleNotSatisfied {
 		this.paymentInstructionID = paymentInstructionID;
 		this.paymentCurrency = paymentCurrency;
