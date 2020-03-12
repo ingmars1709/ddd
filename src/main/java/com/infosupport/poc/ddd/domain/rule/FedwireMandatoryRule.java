@@ -6,6 +6,7 @@ import com.infosupport.poc.ddd.domain.valueobject.Currency;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public final class FedwireMandatoryRule implements SemanticBusinessRule {
 
@@ -16,8 +17,8 @@ public final class FedwireMandatoryRule implements SemanticBusinessRule {
 		return 	params != null && params.size() == 2 &&	isApplicable(Currency.create(params.get(0)), Country.create(params.get(1)));
     }
 
-	public boolean isApplicable(final Currency paymentCurrency, final Country beneficiaryBankCountry) {
-		return paymentCurrency != null && beneficiaryBankCountry != null && paymentCurrency.isUSD() && beneficiaryBankCountry.isUSA();
+	public boolean isApplicable(final Optional<Currency> paymentCurrency, final Country beneficiaryBankCountry) {
+		return paymentCurrency.isPresent() && beneficiaryBankCountry != null && paymentCurrency.get().isUSD() && beneficiaryBankCountry.isUSA();
 	}
 
 	@Override

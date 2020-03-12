@@ -35,7 +35,7 @@ public final class PaymentInstruction implements Entity<PaymentInstruction> {
 							  final Amount amount,
 							  final LocalDateTime forwardDateTime,
 							  final LogTracerImpl tracer,
-							  final List<String> msgs) throws BusinessRuleNotSatisfied {
+							  final List<String> validationMessages) throws BusinessRuleNotSatisfied {
 		this.paymentInstructionID = paymentInstructionID;
 		this.paymentCurrency = paymentCurrency;
 		this.orderingAccount = orderingAccount;
@@ -46,7 +46,7 @@ public final class PaymentInstruction implements Entity<PaymentInstruction> {
 		this.forwardDateTime = forwardDateTime;
 		this.tracer = tracer;
 
-		SemanticBusinessRuleMap.satisfiedBy(this, msgs);
+		SemanticBusinessRuleMap.satisfiedBy(this, validationMessages);
 
 		tracer.trace("PI validated");
 	}

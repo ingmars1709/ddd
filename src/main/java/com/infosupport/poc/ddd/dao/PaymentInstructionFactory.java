@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service("DAOPaymentInstructionFactory")
 public class PaymentInstructionFactory {
@@ -32,7 +33,7 @@ public class PaymentInstructionFactory {
 
 		final List<String> msgs = new ArrayList<>();
 
-        final Currency paymentCurrency = Currency.create("USD", msgs);
+        final Optional<Currency> paymentCurrency = Currency.create("USD", msgs);
         final Country beneficiaryBankCountry = Country.create("United States of America");
 		final com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount orderingAccount = com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount.create(paymentInstructionEntity.getOrderingAccount().getOrderingAccountIdentification(), msgs);
 		final BeneficiaryAccount beneficiaryAccount = BeneficiaryAccount.create("DE89370400440532013000", "Piet", msgs);
@@ -45,7 +46,7 @@ public class PaymentInstructionFactory {
 				orderingAccount,
                 beneficiaryAccount,
 				beneficiaryBank,
-                paymentCurrency,
+                paymentCurrency.orElse(null),
                 fedwire,
                 amount,
                 paymentInstructionEntity.getForwardDateTime(),

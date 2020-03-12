@@ -1,8 +1,8 @@
 package com.infosupport.poc.ddd.domain.valueobject;
 
-import com.infosupport.poc.ddd.domain.rule.BusinessRuleNotSatisfied;
-
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public final class Currency {
 
@@ -10,28 +10,20 @@ public final class Currency {
 	
 	private String currencyCode;
 
-    private Currency(final String currencyCode) throws BusinessRuleNotSatisfied {
-    	if (currencyCode == null || currencyCode.length() != 3) {
-            throw new BusinessRuleNotSatisfied("Currency code has 3 characters");
-		}
+    private Currency(final String currencyCode) {
         this.currencyCode = currencyCode;
     }
 
-    public static Currency create(final String currency, final List<String> validationMessages) {
-        try {
-            return new Currency(currency);
-        } catch (final BusinessRuleNotSatisfied businessRuleNotSatisfied) {
-            validationMessages.addAll(businessRuleNotSatisfied.getValidationMessages());
+    public static Optional<Currency> create(final String currencyCode, final List<String> validationMessages) {
+        if (currencyCode == null || currencyCode.length() != 3) {
+            validationMessages.add("Currency code has 3 characters");
+            return Optional.empty();
         }
-        return null;
+        return Optional.of(new Currency(currencyCode));
     }
 
-    public static Currency create(final String currency) {
-        try {
-            return new Currency(currency);
-        } catch (final BusinessRuleNotSatisfied businessRuleNotSatisfied) {
-            return null;
-        }
+    public static Optional<Currency> create(final String currencyCode) {
+        return create(currencyCode, new ArrayList<>());
     }
 
     public String getCurrencyCode() {

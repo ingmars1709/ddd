@@ -6,6 +6,7 @@ import com.infosupport.poc.ddd.domain.valueobject.Currency;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import static com.infosupport.poc.ddd.domain.rule.SemanticBusinessRuleMap.getFedwireMandatoryRule;
@@ -24,7 +25,7 @@ public final class Fedwire {
     }
 
     public static Fedwire create(final String fedwireCode,
-                          final Currency paymentCurrency,
+                          final Optional<Currency> paymentCurrency,
                           final Country beneficiaryBankCountry,
                           final List<String> validationMessages) {
         try {

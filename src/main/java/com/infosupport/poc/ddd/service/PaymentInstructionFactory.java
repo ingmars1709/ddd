@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service("ServicePaymentInstructionFactory")
 public class PaymentInstructionFactory {
@@ -25,7 +26,7 @@ public class PaymentInstructionFactory {
 
     	final List<String> msgs = new ArrayList<>();
 
-		final Currency paymentCurrency = Currency.create(dto.getPaymentCurrency(), msgs);
+		final Optional<Currency> paymentCurrency = Currency.create(dto.getPaymentCurrency(), msgs);
 		final OrderingAccount orderingAccount = OrderingAccount.create(dto.getOrderingAccountIdentification(), msgs);
 		final BeneficiaryAccount beneficiaryAccount = BeneficiaryAccount.create(dto.getBeneficiaryAccountIdentification(), dto.getBeneficiaryAccountName(), msgs);
 		final Country beneficiaryBankCountry = Country.create(dto.getBeneficiaryBankCountry());
@@ -38,7 +39,7 @@ public class PaymentInstructionFactory {
 				orderingAccount,
 				beneficiaryAccount,
 				beneficiaryBank,
-				paymentCurrency,
+				paymentCurrency.orElse(null),
 				fedwire,
 				amount,
 				calculateForwardDate(paymentCurrency),
@@ -46,7 +47,7 @@ public class PaymentInstructionFactory {
 				msgs);
 	}
 
-	private LocalDateTime calculateForwardDate(final Currency paymentCurrency) {
+	private LocalDateTime calculateForwardDate(final Optional<Currency> paymentCurrency) {
 		return forwardDateService.calculateForwardDate(paymentCurrency);
 	}
 
