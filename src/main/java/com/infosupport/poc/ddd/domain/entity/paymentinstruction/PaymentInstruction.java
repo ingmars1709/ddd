@@ -1,5 +1,6 @@
 package com.infosupport.poc.ddd.domain.entity.paymentinstruction;
 
+import com.infosupport.checker.qual.ApprovedPayment;
 import com.infosupport.poc.ddd.domain.entity.Entity;
 import com.infosupport.poc.ddd.domain.entity.Tracer;
 import com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount;
@@ -24,6 +25,7 @@ public final class PaymentInstruction implements Entity<PaymentInstruction> {
     private Amount amount;
 	private LocalDateTime forwardDateTime;
 	private Tracer tracer;
+	private boolean approved;
 
 	public PaymentInstruction(final Long paymentInstructionID,
 							  final OrderingAccount orderingAccount,
@@ -48,6 +50,16 @@ public final class PaymentInstruction implements Entity<PaymentInstruction> {
 		SemanticBusinessRuleMap.satisfiedBy(this, validationMessages);
 
 		tracer.trace("PI validated");
+	}
+
+	public void send(@ApprovedPayment PaymentInstruction this) {
+		// send approved payment over wire
+	}
+
+	@SuppressWarnings("approvedpayment")
+	public @ApprovedPayment PaymentInstruction approve() {
+		approved = true;
+		return this;
 	}
 
 	@Override
