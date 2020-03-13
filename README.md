@@ -1,4 +1,4 @@
-# Implementing a domain-driven design for a payment system in Java
+# Implementing a Domain-Driven Design for a payment system in Java
 
 This repository contains the source of the domain-driven design referred to from the ``article.pdf``.
 We will study the applicability of DDD in the domain of an on-line banking application which we call Payments. 
@@ -18,3 +18,9 @@ Run the following 3 Maven steps to start the Payment system:
 (3) Point your browser to:
 
 ``http://localhost:8080/addAjax``
+
+Additionally you can compile the source using additional type rules on the PaymentInstruction state:
+
+(1) mvn clean compile -Pchecker
+
+This will invoke the Checker Framework's (https://checkerframework.org/) subtyping checker.
