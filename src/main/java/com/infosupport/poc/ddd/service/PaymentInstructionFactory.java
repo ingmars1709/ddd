@@ -27,21 +27,16 @@ public class PaymentInstructionFactory {
     	final List<String> msgs = new ArrayList<>();
 
 		final Optional<Currency> paymentCurrency = Currency.create(dto.getPaymentCurrency(), msgs);
-		final OrderingAccount orderingAccount = OrderingAccount.create(dto.getOrderingAccountIdentification(), msgs);
-		final BeneficiaryAccount beneficiaryAccount = BeneficiaryAccount.create(dto.getBeneficiaryAccountIdentification(), dto.getBeneficiaryAccountName(), msgs);
 		final Country beneficiaryBankCountry = Country.create(dto.getBeneficiaryBankCountry());
-		final ManualBeneficiaryBank beneficiaryBank = ManualBeneficiaryBank.create(dto.getBeneficiaryBankName(), dto.getBeneficiaryBankAddress(), beneficiaryBankCountry);
-		final Optional<Fedwire> fedwire = Fedwire.create(dto.getFedwireCode(), paymentCurrency, beneficiaryBankCountry, msgs);
-		final Amount amount = Amount.create(dto.getAmount(), msgs);
 
 		return new PaymentInstruction(
 				dto.getPaymentInstructionID(),
-				orderingAccount,
-				beneficiaryAccount,
-				beneficiaryBank,
+				OrderingAccount.create(dto.getOrderingAccountIdentification(), msgs),
+				BeneficiaryAccount.create(dto.getBeneficiaryAccountIdentification(), dto.getBeneficiaryAccountName(), msgs),
+				ManualBeneficiaryBank.create(dto.getBeneficiaryBankName(), dto.getBeneficiaryBankAddress(), beneficiaryBankCountry),
 				paymentCurrency.orElse(null),
-				fedwire.orElse(null),
-				amount,
+				Fedwire.create(dto.getFedwireCode(), paymentCurrency, beneficiaryBankCountry, msgs).orElse(null),
+				Amount.create(dto.getAmount(), msgs),
 				calculateForwardDate(paymentCurrency),
 				new LogTracerImpl(PaymentInstruction.class),
 				msgs);

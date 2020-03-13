@@ -35,20 +35,16 @@ public class PaymentInstructionFactory {
 
         final Optional<Currency> paymentCurrency = Currency.create("USD", msgs);
         final Country beneficiaryBankCountry = Country.create("United States of America");
-		final com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount orderingAccount = com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount.create(paymentInstructionEntity.getOrderingAccount().getOrderingAccountIdentification(), msgs);
-		final BeneficiaryAccount beneficiaryAccount = BeneficiaryAccount.create("DE89370400440532013000", "Piet", msgs);
-		final ManualBeneficiaryBank beneficiaryBank = ManualBeneficiaryBank.create("The Bank", null, beneficiaryBankCountry);
-		final Optional<Fedwire> fedwire = Fedwire.create("123456789", paymentCurrency, beneficiaryBankCountry, msgs);
-		final Amount amount = Amount.create("123", msgs);
 
 		return new PaymentInstruction(
                 paymentInstructionEntity.getId(),
-				orderingAccount,
-                beneficiaryAccount,
-				beneficiaryBank,
+				com.infosupport.poc.ddd.domain.entity.orderingaccount.OrderingAccount
+						.create(paymentInstructionEntity.getOrderingAccount().getOrderingAccountIdentification(), msgs),
+				BeneficiaryAccount.create("DE89370400440532013000", "Piet", msgs),
+				ManualBeneficiaryBank.create("The Bank", null, beneficiaryBankCountry),
                 paymentCurrency.orElse(null),
-                fedwire.orElse(null),
-                amount,
+                Fedwire.create("123456789", paymentCurrency, beneficiaryBankCountry, msgs).orElse(null),
+				Amount.create("123", msgs),
                 paymentInstructionEntity.getForwardDateTime(),
                 new LogTracerImpl(PaymentInstruction.class),
                 msgs
